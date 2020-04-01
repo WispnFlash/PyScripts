@@ -10,7 +10,7 @@ import cv2 as cv
 from numba import cuda
 from numba import autojit
 from numba import jit
-os.environ['R_HOME'] = 'C:\Program Files\R\R-3.5.0'
+os.environ['R_HOME'] = 'C:\Program Files\R\R-3.6.3'
 os.environ['R_USER'] = 'C:\Python37\Lib\site-packages\rpy2'
 from rpy2.robjects import pandas2ri
 pandas2ri.activate()
