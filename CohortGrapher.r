@@ -918,3 +918,103 @@ FDR <- dataset
 write.csv(FDR, file="G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Spreadsheets/FDRIDETCresults.csv")
 rm(list = ls())
 
+setwd("G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Data/Entries to Criterion/Initial Discrimination/MDRst/")
+file_list <- list.files()
+for (i in file_list){
+  # if the merged dataset does exist, append to it
+  if (exists("dataset")){
+    temp_dataset1 <- read.csv(i)
+    dataset <- rbind(dataset, temp_dataset1)
+    rm(temp_dataset1)
+  }
+  # if the merged dataset doesn't exist, create it
+  if (!exists("dataset")){
+    dataset <- read.csv(i)
+  }
+}
+rm(i)
+rm(file_list)
+MDRst <- dataset
+write.csv(MDRst, file="G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Spreadsheets/MDRstIDETCresults.csv")
+rm(list = ls())
+
+setwd("G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Data/Entries to Criterion/Initial Discrimination/FDRst/")
+file_list <- list.files()
+for (i in file_list){
+  # if the merged dataset does exist, append to it
+  if (exists("dataset")){
+    temp_dataset1 <- read.csv(i)
+    dataset <- rbind(dataset, temp_dataset1)
+    rm(temp_dataset1)
+  }
+  # if the merged dataset doesn't exist, create it
+  if (!exists("dataset")){
+    dataset <- read.csv(i)
+  }
+}
+rm(i)
+rm(file_list)
+FDRst <- dataset
+write.csv(FDRst, file="G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Spreadsheets/FDRstIDETCresults.csv")
+rm(list = ls())
+
+setwd("G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Data/Entries to Criterion/Reversal/MDRst/")
+file_list <- list.files()
+for (i in file_list){
+  # if the merged dataset does exist, append to it
+  if (exists("dataset")){
+    temp_dataset1 <- read.csv(i)
+    dataset <- rbind(dataset, temp_dataset1)
+    rm(temp_dataset1)
+  }
+  # if the merged dataset doesn't exist, create it
+  if (!exists("dataset")){
+    dataset <- read.csv(i)
+  }
+}
+rm(i)
+rm(file_list)
+MDRst <- dataset
+write.csv(MDRst, file="G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Spreadsheets/MDRstRevETCresults.csv")
+rm(list = ls())
+
+setwd("G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Data/Entries to Criterion/Reversal/FDRst/")
+file_list <- list.files()
+for (i in file_list){
+  # if the merged dataset does exist, append to it
+  if (exists("dataset")){
+    temp_dataset1 <- read.csv(i)
+    dataset <- rbind(dataset, temp_dataset1)
+    rm(temp_dataset1)
+  }
+  # if the merged dataset doesn't exist, create it
+  if (!exists("dataset")){
+    dataset <- read.csv(i)
+  }
+}
+rm(i)
+rm(file_list)
+FDRst <- dataset
+write.csv(FDRst, file="G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Richardson/Spreadsheets/FDRstRevETCresults.csv")
+rm(list = ls())
+
+setwd("G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Resilience2020/Data/Entries to Criterion/Reversal/yngcontrolmale/")
+file_list <- list.files()
+for (i in file_list){
+  # if the merged dataset does exist, append to it
+  if (exists("dataset")){
+    temp_dataset1 <- read.csv(i)
+    dataset <- rbind(dataset, temp_dataset1)
+    rm(temp_dataset1)
+  }
+  # if the merged dataset doesn't exist, create it
+  if (!exists("dataset")){
+    dataset <- read.csv(i)
+  }
+}
+rm(i)
+rm(file_list)
+yngcontrolmale <- dataset
+write.csv(yngcontrolmale, file="G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Resilience2020/Spreadsheets/yngcontrolmaleRevETCresults.csv")
+rm(list = ls())
+

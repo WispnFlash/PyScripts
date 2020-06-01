@@ -7,9 +7,6 @@ import matplotlib.pyplot as plt
 import multiprocessing as mp		
 import sys
 import cv2 as cv
-from numba import cuda
-from numba import autojit
-from numba import jit
 os.environ['R_HOME'] = 'C:\Program Files\R\R-3.6.3'
 os.environ['R_USER'] = 'C:\Python37\Lib\site-packages\rpy2'
 from rpy2.robjects import pandas2ri
@@ -373,6 +370,8 @@ def Prep(mouse):
 	mousePrep.columns = ["Time", "X", "Y", "Distance moved", "InShelter"]
 	return mousePrep
 
+
+	
 def RunningMedian(mouseframe):
 	ro.globalenv['mouseR'] = pandas2ri.py2ri(mouseframe)
 	ro.r('''
@@ -419,8 +418,10 @@ def TimeElapsed(AnimalID, start, end):
 #Distance moved is column 3
 #InShelter is column 4
 #Segment type is column 5	
-	
-@jit(nopython=True)	
+
+#from numba import jit
+
+#@jit(nopython=True)	
 def Result(array, size):
 	for i in range(0, size):
 		if (array[i, 4] == 1):
@@ -435,7 +436,7 @@ def Result(array, size):
 					array[i, 5] = 2		
 	return array
 					
-@jit(nopython=True)	
+#@jit(nopython=True)	
 def WindowLength(array, size):
 	segmenttype2 = np.full(size, 5)
 	j = 0
@@ -678,7 +679,7 @@ def MouseImport(mouselocation):
 	CC = FindCageCard(mouselocation, HeaderValue)
 	Gender = FindGender(mouselocation, HeaderValue)
 	PRW = FindPreWeight(mouselocation, HeaderValue)
-	POW = FindPostWeight(mouselocation, HeaderValue)
+	POW =FindPostWeight(mouselocation, HeaderValue)
 	WC = CalculateWeightChange(PRW, POW)
 	Ph = FindPhenNumber(mouselocation, HeaderValue)
 	
@@ -708,12 +709,12 @@ def MouseImport(mouselocation):
 	mouse2["PostWeight"] = POW
 	mouse2["%WeightChange"] = WC
 	mouse2["PhenotyperID"] = Ph
-	mouse2.to_csv(directory0 + "Data/raw/" + treatment + "/mouse" + AnimalID + "raw.csv", index=False)
+	"""mouse2.to_csv(directory0 + "Data/raw/" + treatment + "/mouse" + AnimalID + "raw.csv", index=False)"""
 	mouse3 = mouse2[["Investigator", "Strain", "DOB", "RunDate", "Age", "CageCard", "Gender", "PreWeight", "PostWeight", "%WeightChange", "PhenotyperID"]][0:90]
 	mouse4 = mouse2[["Investigator", "Strain", "DOB", "RunDate", "Age", "CageCard", "Gender", "PreWeight", "PostWeight", "%WeightChange", "PhenotyperID"]][0:5001]
 	mouse5 = mouse2[["Investigator", "Strain", "DOB", "RunDate", "Age", "CageCard", "Gender", "PreWeight", "PostWeight", "%WeightChange", "PhenotyperID"]][0:6001]
 	del mouse2
-	print(AnimalID + " raw data exported in " + str(time.time()-start3) + " seconds") 
+	print(AnimalID + " raw data exported in " + str(time.time()-start3) + " seconds")
 	mouseMov = mouse[["Recording time", "Distance moved"]]
 	mouseMov.columns = ["Time", "Movement"]
 	mouseMov = mouseMov[mouseMov["Movement"] >= 0.1]
@@ -1066,7 +1067,7 @@ def MouseImport(mouselocation):
 	elapsed = (time.time()-start) / 60
 	os.remove(inputdirectory + mouselocation)
 	print(AnimalID + "imported in " + str(elapsed) + " minutes!")
- 
+
 os.chdir(inputdirectory)
 inputs = os.listdir()
 

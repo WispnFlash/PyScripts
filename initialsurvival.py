@@ -250,10 +250,12 @@ def CreateCohort(location):
 	for i in files:
 		if dataset is not None:
 			temp = pd.read_csv(i)
-			dataset = pd.concat([dataset, temp])
+			temp = temp[["AnimalNumber", "Treatment", "EntryNumber", "SeventyQualifier", "EightyQualifier", "NinetyQualifier"]]
+			dataset = pd.concat([dataset, temp], axis=0)
 			del temp
 		if dataset is None:
 			dataset = pd.read_csv(i)
+			dataset = dataset[["AnimalNumber", "Treatment", "EntryNumber", "SeventyQualifier", "EightyQualifier", "NinetyQualifier"]]
 	return dataset
 
 def CriterionReached(groupdataset):

@@ -26,7 +26,7 @@ def PrepDirectory(mouselocation):
 	treatment = FindTreatment(mouselocation, HeaderValue)
 	Treatment = FindTreatment(mouselocation, HeaderValue)
 	investigator = FindInvestigator(mouselocation, HeaderValue)
-	outputdirectory = "G:/Behavioral Data/Backup/Investigators/"
+	outputdirectory = "G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/"
 	directories = np.full(29, outputdirectory + investigator + "/Data/Indexes/Cumulative/Cumulative/Cumulative/Cumulative/Cumulative/Cumulative/Cumulative/Cumulative/Cumulative/Cumulative/Cumulative/Cumulative/")
 	directories[0] = outputdirectory + investigator + "/"
 	directories[1] = outputdirectory + investigator + "/Data/raw/" + Treatment + "/"
@@ -370,6 +370,8 @@ def Prep(mouse):
 	mousePrep.columns = ["Time", "X", "Y", "Distance moved", "InShelter"]
 	return mousePrep
 
+
+	
 def RunningMedian(mouseframe):
 	ro.globalenv['mouseR'] = pandas2ri.py2ri(mouseframe)
 	ro.r('''
@@ -418,7 +420,7 @@ def TimeElapsed(AnimalID, start, end):
 #Segment type is column 5	
 
 #from numba import jit
-	
+
 #@jit(nopython=True)	
 def Result(array, size):
 	for i in range(0, size):
@@ -677,11 +679,11 @@ def MouseImport(mouselocation):
 	CC = FindCageCard(mouselocation, HeaderValue)
 	Gender = FindGender(mouselocation, HeaderValue)
 	PRW = FindPreWeight(mouselocation, HeaderValue)
-	POW = FindPostWeight(mouselocation, HeaderValue)
+	POW =FindPostWeight(mouselocation, HeaderValue)
 	WC = CalculateWeightChange(PRW, POW)
 	Ph = FindPhenNumber(mouselocation, HeaderValue)
 	
-	outputdirectory = "G:/Behavioral Data/Backup/Investigators/"
+	outputdirectory = "G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/"
 	directory0 = outputdirectory + investigator + "/"
 	Hour = np.array(range(1, 90))
 	Hour = pd.DataFrame(Hour)
@@ -707,12 +709,12 @@ def MouseImport(mouselocation):
 	mouse2["PostWeight"] = POW
 	mouse2["%WeightChange"] = WC
 	mouse2["PhenotyperID"] = Ph
-	mouse2.to_csv(directory0 + "Data/raw/" + treatment + "/mouse" + AnimalID + "raw.csv", index=False)
+	"""mouse2.to_csv(directory0 + "Data/raw/" + treatment + "/mouse" + AnimalID + "raw.csv", index=False)"""
 	mouse3 = mouse2[["Investigator", "Strain", "DOB", "RunDate", "Age", "CageCard", "Gender", "PreWeight", "PostWeight", "%WeightChange", "PhenotyperID"]][0:90]
 	mouse4 = mouse2[["Investigator", "Strain", "DOB", "RunDate", "Age", "CageCard", "Gender", "PreWeight", "PostWeight", "%WeightChange", "PhenotyperID"]][0:5001]
 	mouse5 = mouse2[["Investigator", "Strain", "DOB", "RunDate", "Age", "CageCard", "Gender", "PreWeight", "PostWeight", "%WeightChange", "PhenotyperID"]][0:6001]
 	del mouse2
-	print(AnimalID + " raw data exported in " + str(time.time()-start3) + " seconds") 
+	print(AnimalID + " raw data exported in " + str(time.time()-start3) + " seconds")
 	mouseMov = mouse[["Recording time", "Distance moved"]]
 	mouseMov.columns = ["Time", "Movement"]
 	mouseMov = mouseMov[mouseMov["Movement"] >= 0.1]
@@ -1065,17 +1067,9 @@ def MouseImport(mouselocation):
 	elapsed = (time.time()-start) / 60
 	os.remove(inputdirectory + mouselocation)
 	print(AnimalID + "imported in " + str(elapsed) + " minutes!")
- 
+
 os.chdir(inputdirectory)
 inputs = os.listdir()
 
-for z in inputs:
-	PrepDirectory(z)
-
-	
-if __name__=='__main__':
-	pool = mp.Pool(processes=4)
-	pool.map_async(MouseImport, inputs)
-	pool.close()
-	pool.join()
+MouseImport(inputs[0])
 

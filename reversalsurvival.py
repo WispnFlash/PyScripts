@@ -3,6 +3,7 @@ import numpy as np
 import multiprocessing as mp
 import os
 import sys
+import time
 import datetime
 from matplotlib import pyplot as plt
 from scipy import stats
@@ -250,10 +251,12 @@ def CreateCohort(location):
 	for i in files:
 		if dataset is not None:
 			temp = pd.read_csv(i)
+			temp = temp[["AnimalNumber", "Treatment", "EntryNumber", "SeventyQualifier", "EightyQualifier", "NinetyQualifier"]]
 			dataset = pd.concat([dataset, temp])
 			del temp
 		if dataset is None:
 			dataset = pd.read_csv(i)
+			dataset = dataset[["AnimalNumber", "Treatment", "EntryNumber", "SeventyQualifier", "EightyQualifier", "NinetyQualifier"]]
 	return dataset
 
 def CriterionReached(groupdataset):
@@ -280,10 +283,39 @@ def CriterionReached(groupdataset):
 	Cognition.columns = ["Entry", "Seventy", "Eighty", "Ninety"]
 	Cognition.to_csv("G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Temp/" + treatment + "ReversalSurvival.csv")
 	return Cognition
+	
+def CriterionReachedv2(groupdataset):
+	groupsize = int(len(groupdataset[groupdataset["EntryNumber"] == 1]))
+	treatment = groupdataset["Treatment"][0]
+	groupdataset = groupdataset.reset_index()
+	del groupdataset["index"]
+	inputarray = np.array(groupdataset)
+	outputarray1 = np.zeros(6000)
+	outputarray2 = np.zeros(6000)
+	outputarray3 = np.zeros(6000)
+	Entry = np.array(range(1, 6001))
+	Entry = pd.DataFrame(Entry)
+	indexer = 1
+	for element in range(0, 6000):
+		outputarray1[element] = inputarray[inputarray[:, 2] == indexer, 3].sum() / groupsize * 100
+		outputarray2[element] = inputarray[inputarray[:, 2] == indexer, 4].sum() / groupsize * 100
+		outputarray3[element] = inputarray[inputarray[:, 2] == indexer, 5].sum() / groupsize * 100
+		indexer = indexer + 1
+	outputarray1 = pd.DataFrame(outputarray1)
+	outputarray2 = pd.DataFrame(outputarray2)
+	outputarray3 = pd.DataFrame(outputarray3)
+	Cognition = pd.concat([Entry, outputarray1, outputarray2, outputarray3], axis = 1)
+	Cognition.columns = ["Entry", "Seventy", "Eighty", "Ninety"]
+	Cognition.to_csv("G:/Behavioral Data/Sonntag Lab Dropbox/Phenotyper/Investigators/Temp/" + treatment + "ReversalSurvival.csv")
+	return Cognition
 
 if (numberofgroups == 1):
+	start = time.time()
 	Group1 = CreateCohort(directory1)
+	print(str(time.time()-start))
+	start = time.time()
 	CriterionReached(Group1)
+	print(str(time.time()-start))
 	value = 1
 	if (value == 1):
 		G1N = str(len(os.listdir(directory1)))
